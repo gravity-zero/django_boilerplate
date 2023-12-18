@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  web:
+    env_file:
+      - .env.dev
+    container_name: django_app
+    build: .
+    volumes:
+      - ./:/app/
+    ports:
+      - "8001:8000"
+    command: "bash /app/init.sh"
+    depends_on:
+      - db
+    networks:
+      - django-network
+
+  db:
+    image: mariadb:latest
+    env_file:
+      - .env.dev
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: 'root_pass'
+    volumes:
+      - './db:/var/lib/mysql'
+    ports:
+      - "3308:3306"
+    networks:
+      - django-network
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8321:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    networks:
+      - django-network
+
+volumes:
+    db:
+        driver: local
+
+networks:
+    django-network:
+
