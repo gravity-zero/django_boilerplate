@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/app/
+    ports:
+      - "8001:8000"
+    command: "bash /app/init.sh"
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: 'blog'
+      MYSQL_USER: 'grl'
+      MYSQL_PASSWORD: 'pass'
+      MYSQL_ROOT_PASSWORD: 'root_pass'
+    volumes:
+      - './db:/var/lib/mysql'
+    ports:
+      - "3308:3306"
