@@ -5,21 +5,23 @@ import sys
 from django.db import connections
 from dotenv import dotenv_values
 
-config = dotenv_values(".env.dev")  # config = {"USER": "foo", "EMAIL": "foo@example.org"}
-
-print("URL du projet: "+ config['ROOT_URL'])
-# Vérifier la connexion à MySQL
-try:
-    connection = connections['default']
-    cursor = connection.cursor()
-    cursor.execute("SELECT 1")
-    print("Connexion à MySQL réussie !")
-except Exception as e:
-    print(f"Erreur de connexion à MySQL : {e}")
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mt5_app.settings')
+
+    # Vérifier la connexion à MySQL
+    try:
+        connection = connections['default']
+        cursor = connection.cursor()
+        result = cursor.execute("SELECT 1")
+        print("Connexion à MySQL réussie ! SELECT 1 =", result)
+    except Exception as e:
+        print(f"Erreur de connexion à MySQL : {e}")
+
+    # config = dotenv_values(".env.dev")
+    # print("URL du projet .env.dev:", config['ROOT_URL'])
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
