@@ -11,6 +11,8 @@ services:
     command: "bash /app/init.sh"
     depends_on:
       - db
+    networks:
+      - django-network
 
   db:
     image: mariadb:latest
@@ -23,3 +25,26 @@ services:
       - './db:/var/lib/mysql'
     ports:
       - "3308:3306"
+    networks:
+      - django-network
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8321:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    networks:
+      - django-network
+
+volumes:
+    db:
+        driver: local
+
+networks:
+    django-network:
+
