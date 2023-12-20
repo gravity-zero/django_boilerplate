@@ -3,7 +3,7 @@
 import os
 import sys
 from django.db import connections
-from dotenv import dotenv_values
+# from dotenv import dotenv_values
 
 
 def main():
