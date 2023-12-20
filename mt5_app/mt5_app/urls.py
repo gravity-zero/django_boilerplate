@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from mt5_app.blog import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('create-article/',  views.create_article, name='create_article'),
+    path('get-article/', admin.site.getArticle),
+    path('create-user/', admin.site.user),
+    path('get-user/', admin.site.getUser),
 ]

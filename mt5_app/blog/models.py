@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -9,6 +10,5 @@ class Post(models.Model):
     slug = models.SlugField(unique=True, max_length=255)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    author = models.TextField()
-
+    author = models.ForeignKey(User, on_delete=models.CASCADE) 
 
