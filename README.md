@@ -39,5 +39,41 @@ docker exec django_app python ./mt5_app/manage.py makemigrations && \
 docker exec django_app python ./mt5_app/manage.py migrate
 ```
 
-### Variable d'environnement
-- Actuellement les variables d'environnement sont stocké dans un .env.dev pour une mise en production, il faudrait modifier l'import du .Env
+### Routing
+
+La première partie de la configuration des routes ce situe dans le fichier mt5_app/urls.py
+
+Le but est de déclarer les routes et les paramètres + la classe à appeler.
+
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('article',  ArticleView.as_view()),
+    path('article/<int:article_id>', ArticleView.as_view()),
+    path('user',  UserView.as_view()),
+    path('user/<int:user_id>', UserView.as_view())
+]
+```
+
+Dans le fichier blog/views.py, vous trouverez 2 classes avec des méthodes post et get (C'est un des moyens de "respecter" les principes de REST)
+
+```python
+ class ArticleView(View):
+
+ ## ....
+ 
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            title = data.get('title')
+            slug = data.get('slug')
+            content = data.get('content')
+            author_id = data.get('author_id')
+            new_blog_post = Post(title=title, slug=slug, content=content, author_id=author_id)
+            new_blog_post.save()
+            return JsonResponse({'message': 'Article created successfully'}, status=201)
+            pass
+        except Exception as e:
+            return JsonResponse({'error': 'An exception occurred, ' + str(e)}, status=400)
+ ```
+
