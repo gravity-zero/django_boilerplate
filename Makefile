@@ -1,5 +1,5 @@
 dev:
-	docker compose up -d --build && \
+	docker compose --env-file .env.dev up -d --build && \
 	if [ -d ./mt5_app ]; then \
 		sudo chown -R $(USER) ./mt5_app; \
 	else \

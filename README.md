@@ -55,7 +55,7 @@ urlpatterns = [
 ]
 ```
 
-Dans le fichier blog/views.py, vous trouverez 2 classes avec des méthodes post et get (C'est un des moyens de "respecter" les principes de REST)
+Dans le fichier blog/views.py, vous trouverez 2 classes avec des méthodes post et get (C'est un des moyens de "respecter" les principes de REST et surtout d'être sûr de la méthode utilisé pour appeler la route)
 
 ```python
  class ArticleView(View):
@@ -69,11 +69,11 @@ Dans le fichier blog/views.py, vous trouverez 2 classes avec des méthodes post 
             slug = data.get('slug')
             content = data.get('content')
             author_id = data.get('author_id')
-            new_blog_post = Post(title=title, slug=slug, content=content, author_id=author_id)
-            new_blog_post.save()
+            new_blog_article = Article(title=title, slug=slug, content=content, author_id=author_id)
+            new_blog_article.save()
             return JsonResponse({'message': 'Article created successfully'}, status=201)
             pass
         except Exception as e:
-            return JsonResponse({'error': 'An exception occurred, ' + str(e)}, status=400)
+            return JsonResponse({'error': 'An exception occurred, ' + str(e)}, status=500)
  ```
 

@@ -18,10 +18,12 @@ services:
 
   db:
     image: mariadb:latest
+    env_file:
+      - .env.dev
     environment:
-      MYSQL_DATABASE: 'blog'
-      MYSQL_USER: 'grl'
-      MYSQL_PASSWORD: 'pass'
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
       MYSQL_ROOT_PASSWORD: 'root_pass'
     volumes:
       - './db:/var/lib/mysql'
